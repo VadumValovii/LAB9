@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Лабораторна робота — JavaScript: Рядки, дати, числа</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input { margin: 5px; }
+    button { margin: 5px 10px; }
+    .section { margin-bottom: 30px; }
+  </style>
+</head>
+<body>
+  <h1>JavaScript: Рядки, Дати, Числа</h1>
+
+  <div class="section">
+    <h2>1. Перевірка чи рядок є натуральним числом</h2>
+    <input type="text" id="natInput" placeholder="Введіть рядок">
+    <button onclick="checkDigits()">Перевірити</button>
+  </div>
+
+  <div class="section">
+    <h2>2. Перевірка на дійсне число</h2>
+    <input type="text" id="realInput" placeholder="Введіть рядок">
+    <button onclick="checkRealNumber()">Перевірити</button>
+  </div>
+
+  <div class="section">
+    <h2>3. Видалення послідовних пробілів</h2>
+    <input type="text" id="spacesInput" placeholder="Введіть текст з пробілами">
+    <button onclick="removeExtraSpaces()">Очистити пробіли</button>
+  </div>
+
+  <div class="section">
+    <h2>4. Перевірка E-mail</h2>
+    <input type="text" id="emailInput" placeholder="example@email.com">
+    <button onclick="checkEmail()">Перевірити Email</button>
+  </div>
+
+  <div class="section">
+    <h2>5. Поточна дата і час</h2>
+    <button onclick="showCurrentDateTime()">Показати</button>
+  </div>
+
+  <div class="section">
+    <h2>6. День тижня народження</h2>
+    <input type="date" id="birthDate">
+    <button onclick="showBirthDay()">Дізнатись</button>
+  </div>
+
+  <div class="section">
+    <h2>7. День тижня X років тому</h2>
+    <button onclick="showPastBirthdays()">Показати (10,12,25,38 років тому)</button>
+  </div>
+
+  <div class="section">
+    <h2>8. День народження через 3 роки</h2>
+    <button onclick="showFutureBirthday()">Дізнатись</button>
+  </div>
+
+  <div class="section">
+    <h2>9. Різниця між часами</h2>
+    Години 1: <input type="number" id="h1" min="0" max="23"> Хвилини 1: <input type="number" id="m1" min="0" max="59"><br>
+    Години 2: <input type="number" id="h2" min="0" max="23"> Хвилини 2: <input type="number" id="m2" min="0" max="59"><br>
+    <button onclick="calculateTimeInterval()">Обчислити інтервал</button>
+  </div>
+
+  <div class="section">
+    <h2>10. Перевірка чи є числом</h2>
+    <input type="text" id="numberInput">
+    <button onclick="checkIfNumber()">Перевірити</button>
+  </div>
+
+  <div class="section">
+    <h2>11. Представлення дати народження у різних системах</h2>
+    <button onclick="showBirthDateSystems()">Показати</button>
+  </div>
+
+  <div class="section">
+    <h2>12. Гіпотенуза трикутника</h2>
+    Катет a: <input type="number" id="catA"> Катет b: <input type="number" id="catB">
+    <button onclick="calcHypotenuse()">Обчислити</button>
+  </div>
+
+<script>
+function checkDigits() {
+  let str = document.getElementById("natInput").value;
+  for (let i = 0; i < str.length; i++) {
+    let code = str.charCodeAt(i);
+    if (code < 48 || code > 57) {
+      alert("Це не натуральне число"); return;
+    }
+  }
+  alert("Це натуральне число");
+}
+
+function checkRealNumber() {
+  let str = document.getElementById("realInput").value;
+  let dots = 0;
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] === '.' || str[i] === ',') dots++;
+    else if (str.charCodeAt(i) < 48 || str.charCodeAt(i) > 57) {
+      alert("Це не дійсне число"); return;
+    }
+  }
+  if (dots <= 1) alert("Це дійсне число");
+  else alert("Це не дійсне число");
+}
+
+function removeExtraSpaces() {
+  let text = document.getElementById("spacesInput").value;
+  alert(text.replace(/\s+/g, ' ').trim());
+}
+
+function checkEmail() {
+  let str = document.getElementById("emailInput").value;
+  let at = str.indexOf("@");
+  let dot = str.lastIndexOf(".");
+  if (at < 1 || dot < at + 2 || dot === str.length - 1) {
+    alert("E-mail задано неправильно");
+  } else {
+    alert("Формат E-mail виглядає допустимим");
+  }
+}
+
+function showCurrentDateTime() {
+  let d = new Date();
+  alert("Сьогодні " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + "  " + d.getHours() + ":" + d.getMinutes());
+}
+
+function showBirthDay() {
+  let d = new Date(document.getElementById("birthDate").value);
+  let days = ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П’ятниця", "Субота"];
+  alert("Ви народилися в: " + days[d.getDay()]);
+}
+
+function showPastBirthdays() {
+  let base = new Date(document.getElementById("birthDate").value);
+  [10, 12, 25, 38].forEach(years => {
+    let past = new Date(base);
+    past.setFullYear(base.getFullYear() - years);
+    alert(`${years} років тому: ${past.toLocaleDateString()} — ${past.toLocaleString('uk-UA', { weekday: 'long' })}`);
+  });
+}
+
+function showFutureBirthday() {
+  let base = new Date(document.getElementById("birthDate").value);
+  base.setFullYear(base.getFullYear() + 3);
+  alert(`Через 3 роки: ${base.toLocaleDateString()} — ${base.toLocaleString('uk-UA', { weekday: 'long' })}`);
+}
+
+function calculateTimeInterval() {
+  let h1 = +document.getElementById("h1").value;
+  let m1 = +document.getElementById("m1").value;
+  let h2 = +document.getElementById("h2").value;
+  let m2 = +document.getElementById("m2").value;
+  let t1 = h1 * 60 + m1;
+  let t2 = h2 * 60 + m2;
+  let diff = Math.abs(t1 - t2);
+  alert(`Інтервал: ${Math.floor(diff / 60)} год. ${diff % 60} хв.`);
+}
+
+function checkIfNumber() {
+  let n = document.getElementById("numberInput").value;
+  alert(isNaN(n) ? "Це не число" : "Це число");
+}
+
+function showBirthDateSystems() {
+  let d = new Date(document.getElementById("birthDate").value);
+  let sum = d.getDate() + d.getMonth() + 1 + d.getFullYear();
+  alert(`Десяткова: ${sum}\nДвійкова: ${sum.toString(2)}\nШістнадцяткова: ${sum.toString(16)}`);
+}
+
+function calcHypotenuse() {
+  let a = +document.getElementById("catA").value;
+  let b = +document.getElementById("catB").value;
+  let c = Math.sqrt(a * a + b * b);
+  alert("Гіпотенуза = " + c.toFixed(2));
+}
+</script>
+
+</body>
+</html>
